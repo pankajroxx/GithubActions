@@ -16,9 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_14.2.app
-
     - uses: actions/cache@v2
       id: cocoapods-cache
       with:
