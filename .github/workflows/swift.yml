@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref }}-${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    if: contains(github.event.pull_request.labels.*.name, 'unit_test_pr')
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/cache@v2
+      id: cocoapods-cache
+      with:
+        path: Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pods-
+
+    - name: Test
+      run: xcodebuild test -workspace GithubActions.xcworkspace -scheme "GithubActions" -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO -resultBundlePath TestResults
+
+    - uses: kishikawakatsumi/xcresulttool@v1
+      with:
+        path: TestResults.xcresult
+        show-passed-tests: false
+        upload-bundles: never
+      if: success() || failure()
