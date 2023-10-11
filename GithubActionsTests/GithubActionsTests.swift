@@ -35,7 +35,7 @@ final class GithubActionsTests: XCTestCase {
     
     func testAdd() {
         let c = ViewController.add(a: 1, b: 2)
-        XCTAssert(c==3)
+        XCTAssert(c==4)
     }
 
 }
