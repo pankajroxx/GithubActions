@@ -32,5 +32,10 @@ final class GithubActionsTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    func testAdd() {
+        let c = ViewController.add(a: 1, b: 2)
+        XCTAssert(c==3)
+    }
 
 }
