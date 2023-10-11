@@ -11,7 +11,7 @@ concurrency:
 jobs:
   build-and-test:
     if: contains(github.event.pull_request.labels.*.name, 'unit_test_pr')
-    runs-on: macos-latest
+    runs-on: macos-latest-large
 
     steps:
     - uses: actions/checkout@v2
